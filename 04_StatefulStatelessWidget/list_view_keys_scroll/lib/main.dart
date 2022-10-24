@@ -60,24 +60,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: nav.length,
+      length: data.keys.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Homework example'),
+          title: Text('Homework 4 example'),
+          bottom: TabBar(tabs: data.keys.map((e) => Tab(text: e)).toList()),
         ),
         body: TabBarView(
-          children: nav.map((name) {
-            return ListView(
-              key: PageStorageKey(name),
-              children: <Widget>[
-                ...fakeData.map((e) {
-                  return Text(e);
-                }).toList()
-              ],
-            );
-          }).toList(),
+          children: [
+            _buildList(key: data.keys.elementAt(0), images: data.values.elementAt(0)),
+            _buildList(key: data.keys.elementAt(1), images: data.values.elementAt(1)),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildList({String key, List<String> images}) {
+    return ListView.builder(
+      key: PageStorageKey(key),
+      itemBuilder: (BuildContext context, i) => Image.network(images[i]),
+      itemCount: images.length,
     );
   }
 }
